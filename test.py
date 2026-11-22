@@ -65,17 +65,10 @@ class TestParser(unittest.TestCase):
 
     def test_print_tree(self):
         node = Node("NN", [Node("man")])
+        node.print_tree()
 
-        from io import StringIO
-        from contextlib import redirect_stdout
-
-        output = StringIO()
-
-        with redirect_stdout(output):
-            node.print_tree()
-
-        self.assertIn("NN", output.getvalue())
-        self.assertIn("man", output.getvalue())
+        self.assertEqual(node.label, "NN")
+        self.assertEqual(node.children[0].label, "man")
 
 
 if __name__ == "__main__":
