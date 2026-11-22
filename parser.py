@@ -1,3 +1,5 @@
+from node import Node
+
 def read_lexicon(filename):
     lexicon = {}
 
@@ -49,7 +51,7 @@ def get_pos_tags(words, lexicon):
         else:
             pos_tags.append("UNKNOWN")
 
-        return pos_tags
+    return pos_tags
 
 def find_matching_rule(sequence, rules):
 
@@ -61,3 +63,58 @@ def find_matching_rule(sequence, rules):
                 return parent
 
     return None
+
+
+
+
+def parse(words, pos_tags, rules):
+
+    nodes = []
+
+    for word, pos in zip(words, pos_tags):
+        word_node = Node(word)
+        pos_node = Node(pos, [word_node])
+        nodes.append(pos_node)
+
+    def try_reductions(current):
+
+        if len(current) == 1 and current[0].label == "S":
+            return current[0]
+
+        for start in range(len(current)):
+
+            for end in range(start + 1, len(current) + 1):
+
+                selected_nodes = current[start:end]
+
+                sequence = [
+                    node.label for node in selected_nodes
+                ]
+
+                for parent, productions in rules.items():
+
+                    for children in productions:
+
+                        if sequence == children:
+
+                            parent_node = Node(
+                                parent,
+                                selected_nodes
+                            )
+
+                            new_sequence = (
+                                current[:start]
+                                + [parent_node]
+                                + current[end:]
+                            )
+
+                            result = try_reductions(new_sequence)
+
+                            if result is not None:
+                                return result
+
+        return None
+
+    return try_reductions(nodes)
+
+

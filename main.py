@@ -1,24 +1,40 @@
-from parser import*
+
+from parser import (
+    read_lexicon,
+    read_rules,
+    tokenize_sentence,
+    get_pos_tags,
+    parse
+)
+
 
 def main():
+    print("AHLT Syntax Parser")
+    print("------------------")
+
+    lexicon = read_lexicon("lexicon.txt")
     categories, rules = read_rules("rules.txt")
 
-    print("AHLT Grammar Matching Test")
-    print("--------------------------")
+    sentence = input("Enter a sentence: ")
 
-    test_sequences = [
-        ["DT", "NN"],
-        ["DT", "JJ", "NN"],
-        ["VBZ", "NP"],
-        ["NP", "VP"],
-        ["NN", "DT"],
-    ]
+    words = tokenize_sentence(sentence)
+    pos_tags = get_pos_tags(words, lexicon)
 
-    for i in test_sequences:
-        result = find_matching_rule(i, rules)
+    print("\nWords:", words)
+    print("POS Tags:", pos_tags)
 
-        print(i, "->", result)
+    tree = parse(words, pos_tags, rules)
 
-            
+    if tree is not None:
+        print("\nSentence ACCEPTED")
+        print("Root node:", tree.label)
+        print("Root children:")
+
+        for child in tree.children:
+            print(child.label)
+    else:
+        print("\nSentence REJECTED")
+
+
 if __name__ == "__main__":
     main()
