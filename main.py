@@ -8,28 +8,14 @@ def main():
     lexicon = read_lexicon("lexicon.txt")
     categories, rules = read_rules("rules.txt")
 
+    sentence = input("Enter a sentence: ")
 
-    print("Lexicon loaded successfully!")
-    print("Total words:", len(lexicon))
+    words = tokenize_sentence(sentence)
+    pos_tags = get_pos_tags(words, lexicon)
 
-    word = input("Enter a word: ").lower()
+    print("\nWords: ", words)
+    print("POS TAGS: ", pos_tags)
 
-    if word in lexicon:
-        print("Word found!")
-        print("Information:", lexicon[word])
-
-    else:
-        print("Word not found in lexicon")
-
-    print("###################################")
-
-    print("categories:", categories)
-
-    print ("\nGrammar rules:")
-
-    for parent, productions in rules.items():
-        for children in productions:
-            print(parent, "->", " ".join(children))
 
             
 if __name__ == "__main__":

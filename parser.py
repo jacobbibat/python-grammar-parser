@@ -35,3 +35,18 @@ def read_rules(filename):
                 rules[parent].append(children)
 
     return categories, rules
+
+def tokenize_sentence(sentence):
+    words = sentence.lower().split()
+    return words
+
+def get_pos_tags(words, lexicon):
+    pos_tags = []
+
+    for word in words:
+        if word in lexicon:
+            pos_tags.append(lexicon[word]["pos"])
+        else:
+            pos_tags.append("UNKNOWN")
+
+        return pos_tags
