@@ -62,6 +62,7 @@ def find_matching_rule(sequence, rules):
 
     return None
 
+
 def parse(words, pos_tags, rules):
     nodes = []
 
@@ -90,23 +91,22 @@ def parse(words, pos_tags, rules):
                 for node in selected:
                     tags.append(node.label)
 
-                    parent = find_matching_rule(tags, rules)
+                parent = find_matching_rule(tags, rules)
 
-                    if parent is not None:
-                        new_node = Node(parent, selected)
+                if parent is not None:
+                    new_node = Node(parent, selected)
 
-                        nodes = (
-                            nodes[:start]
-                            + [new_node]
-                            + nodes[end:]
-                        )
+                    nodes = (
+                        nodes[:start]
+                        + [new_node]
+                        + nodes[end:]
+                    )
 
-                        return reduce(nodes)
+                    return reduce(nodes)
 
         return nodes
 
     return reduce(nodes)
-
 
 def check_agreement(words, pos_tags, lexicon):
     subject_number = None
