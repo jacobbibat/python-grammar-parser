@@ -6,6 +6,7 @@ def main():
     print("------------------")
 
     lexicon = read_lexicon("lexicon.txt")
+    categories, rules = read_rules("rules.txt")
 
 
     print("Lexicon loaded successfully!")
@@ -20,5 +21,16 @@ def main():
     else:
         print("Word not found in lexicon")
 
+    print("###################################")
+
+    print("categories:", categories)
+
+    print ("\nGrammar rules:")
+
+    for parent, productions in rules.items():
+        for children in productions:
+            print(parent, "->", " ".join(children))
+
+            
 if __name__ == "__main__":
     main()
