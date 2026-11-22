@@ -1,29 +1,20 @@
-Python Grammar Parser
+AHLT GRAMMAR PARSER
 
-A rule-based natural language parser developed in Python for an Applied Human Language Technology university assignment.
+Language: Python 3
 
-The system uses a context-free grammar (CFG) and a bottom-up parsing approach to analyse English sentences and determine whether they follow predefined grammatical rules.
+FILES:
+main.py - Main program
+parser.py - Grammar parsing functions
+node.py - Syntax tree implementation
+lexicon.txt - Lexical entries
+rules.txt - Grammar production rules
+test.py - Unit tests
+test_sentences.txt - Example test sentences
 
-Features
+Run:
 
-Reads vocabulary and grammatical categories from a lexicon file.
+   python main.py
 
-Loads phrase structure rules from an external grammar file.
+and Enter a sentence when prompted. You can use the test sentences provided at test_sentences.txt
 
-Identifies parts of speech (POS) for input words.
-
-Generates bracketed representations of sentence structures.
-
-Accepts or rejects sentences based on grammar rules.
-
-Preserves partial parse structures when a complete parse cannot be constructed.
-
-Technologies
-
-Python
-
-Context-Free Grammar (CFG)
-
-Natural Language Processing (NLP)
-
-Tree Data Structures
+PDF is also included in this file

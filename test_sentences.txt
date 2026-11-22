@@ -1,0 +1,12 @@
+VALID SENTENCES
+The man likes the dog
+The men like the dog
+The man likes the new dog
+The man eats
+The men eat
+
+INVALID SENTENCES
+The man like the dog
+The men likes the dog
+The man likes the cat
+The man likes the dog man
