@@ -50,3 +50,14 @@ def get_pos_tags(words, lexicon):
             pos_tags.append("UNKNOWN")
 
         return pos_tags
+
+def find_matching_rule(sequence, rules):
+
+    for parent, productions in rules.items():
+
+        for children in productions:
+
+            if sequence == children:
+                return parent
+
+    return None

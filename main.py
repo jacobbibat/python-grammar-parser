@@ -1,21 +1,23 @@
-
 from parser import*
 
 def main():
-    print("AHLT Syntax Parser")
-    print("------------------")
-
-    lexicon = read_lexicon("lexicon.txt")
     categories, rules = read_rules("rules.txt")
 
-    sentence = input("Enter a sentence: ")
+    print("AHLT Grammar Matching Test")
+    print("--------------------------")
 
-    words = tokenize_sentence(sentence)
-    pos_tags = get_pos_tags(words, lexicon)
+    test_sequences = [
+        ["DT", "NN"],
+        ["DT", "JJ", "NN"],
+        ["VBZ", "NP"],
+        ["NP", "VP"],
+        ["NN", "DT"],
+    ]
 
-    print("\nWords: ", words)
-    print("POS TAGS: ", pos_tags)
+    for i in test_sequences:
+        result = find_matching_rule(i, rules)
 
+        print(i, "->", result)
 
             
 if __name__ == "__main__":
