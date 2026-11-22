@@ -31,12 +31,12 @@ class Node:
 
                 is_last = index == len(node.children) - 1
 
-                connector = "└── " if is_last else "├── "
+                connector = "^-- " if is_last else "|-- "
 
                 print(prefix + connector + child.label)
 
                 new_prefix = prefix + (
-                    "    " if is_last else "│   "
+                    "    " if is_last else "|   "
                 )
 
                 print_children(child, new_prefix)
