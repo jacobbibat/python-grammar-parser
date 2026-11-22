@@ -1,40 +1,30 @@
+from parser import *
 
-from parser import (
-    read_lexicon,
-    read_rules,
-    tokenize_sentence,
-    get_pos_tags,
-    parse
-)
+lexicon = read_lexicon("lexicon.txt")
+categories, rules = read_rules("rules.txt")
 
+sentence = input("Enter a sentence: ")
 
-def main():
-    print("AHLT Syntax Parser")
-    print("------------------")
+words = tokenize_sentence(sentence)
+pos_tags = get_pos_tags(words, lexicon)
 
-    lexicon = read_lexicon("lexicon.txt")
-    categories, rules = read_rules("rules.txt")
+# Parse the sentence
+nodes = parse(words, pos_tags, rules)
 
-    sentence = input("Enter a sentence: ")
+# Check grammar and subject-verb agreement
+if len(nodes) == 1 and nodes[0].label == "S" and check_agreement(words, pos_tags, lexicon):
+    print("\nSentence ACCEPTED")
+else:
+    print("\nSentence REJECTED")
 
-    words = tokenize_sentence(sentence)
-    pos_tags = get_pos_tags(words, lexicon)
+# Display bracketed structure
+print("\nBracketed Structure:")
 
-    print("\nWords:", words)
-    print("POS Tags:", pos_tags)
+for node in nodes:
+    print(node.to_brackets())
 
-    tree = parse(words, pos_tags, rules)
+# Display syntax tree
+print("\nSyntax Tree:")
 
-    if tree is not None:
-        print("\nSentence ACCEPTED")
-        print("Root node:", tree.label)
-        print("Root children:")
-
-        for child in tree.children:
-            print(child.label)
-    else:
-        print("\nSentence REJECTED")
-
-
-if __name__ == "__main__":
-    main()
+for node in nodes:
+    node.print_tree()

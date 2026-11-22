@@ -1,9 +1,10 @@
+
 from node import Node
 
 def read_lexicon(filename):
     lexicon = {}
 
-    with open(filename, 'r', encoding='utf-8') as file:
+    with open(filename, "r", encoding="utf-8") as file:
         for line in file:
             parts = line.strip().split()
 
@@ -16,7 +17,7 @@ def read_lexicon(filename):
                     "number": number
                 }
 
-        return lexicon
+    return lexicon
 
 def read_rules(filename):
     rules = {}
@@ -27,7 +28,7 @@ def read_rules(filename):
         for line in file:
             parts = line.strip().split()
 
-            if len(parts) >=2:
+            if len(parts) >= 2:
                 parent = parts[0]
                 children = parts[1:]
 
@@ -54,21 +55,14 @@ def get_pos_tags(words, lexicon):
     return pos_tags
 
 def find_matching_rule(sequence, rules):
-
     for parent, productions in rules.items():
-
         for children in productions:
-
             if sequence == children:
                 return parent
 
     return None
 
-
-
-
 def parse(words, pos_tags, rules):
-
     nodes = []
 
     for word, pos in zip(words, pos_tags):
@@ -76,45 +70,57 @@ def parse(words, pos_tags, rules):
         pos_node = Node(pos, [word_node])
         nodes.append(pos_node)
 
-    def try_reductions(current):
+    def reduce(nodes):
+        labels = []
 
-        if len(current) == 1 and current[0].label == "S":
-            return current[0]
+        for node in nodes:
+            labels.append(node.label)
 
-        for start in range(len(current)):
+        print("Current:", labels)
 
-            for end in range(start + 1, len(current) + 1):
+        if labels == ["S"]:
+            return nodes
 
-                selected_nodes = current[start:end]
+        for start in range(len(nodes)):
+            for end in range(start + 1, len(nodes) + 1):
+                selected = nodes[start:end]
 
-                sequence = [
-                    node.label for node in selected_nodes
-                ]
+                tags = []
 
-                for parent, productions in rules.items():
+                for node in selected:
+                    tags.append(node.label)
 
-                    for children in productions:
+                    parent = find_matching_rule(tags, rules)
 
-                        if sequence == children:
+                    if parent is not None:
+                        new_node = Node(parent, selected)
 
-                            parent_node = Node(
-                                parent,
-                                selected_nodes
-                            )
+                        nodes = (
+                            nodes[:start]
+                            + [new_node]
+                            + nodes[end:]
+                        )
 
-                            new_sequence = (
-                                current[:start]
-                                + [parent_node]
-                                + current[end:]
-                            )
+                        return reduce(nodes)
 
-                            result = try_reductions(new_sequence)
+        return nodes
 
-                            if result is not None:
-                                return result
-
-        return None
-
-    return try_reductions(nodes)
+    return reduce(nodes)
 
 
+def check_agreement(words, pos_tags, lexicon):
+    subject_number = None
+    verb_number = None
+
+    for i in range(len(pos_tags)):
+
+        if pos_tags[i] in ["NN", "NNS"] and subject_number is None:
+            subject_number = lexicon[words[i]]["number"]
+
+        if pos_tags[i] in ["VBZ", "VBP"] and verb_number is None:
+            verb_number = lexicon[words[i]]["number"]
+
+    if subject_number is None or verb_number is None:
+        return False
+
+    return subject_number == verb_number
