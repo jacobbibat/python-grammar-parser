@@ -1,4 +1,3 @@
-
 from node import Node
 
 def read_lexicon(filename):
@@ -117,7 +116,7 @@ def check_agreement(words, pos_tags, lexicon):
         if pos_tags[i] in ["NN", "NNS"] and subject_number is None:
             subject_number = lexicon[words[i]]["number"]
 
-        if pos_tags[i] in ["VBZ", "VBP"] and verb_number is None:
+        if pos_tags[i] in ["VBZ", "VBP", "IVBZ", "IVBP"] and verb_number is None:
             verb_number = lexicon[words[i]]["number"]
 
     if subject_number is None or verb_number is None:

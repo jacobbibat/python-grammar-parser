@@ -70,6 +70,14 @@ class TestParser(unittest.TestCase):
         self.assertEqual(node.label, "NN")
         self.assertEqual(node.children[0].label, "man")
 
+    def test_intransitive_verb(self):
+        words = tokenize_sentence("The man eats")
+        pos_tags = get_pos_tags(words, self.lexicon)
+        nodes = parse(words, pos_tags, self.rules)
+
+        self.assertEqual(nodes[0].label, "S")
+        self.assertTrue(check_agreement(words, pos_tags, self.lexicon))
+
 
 if __name__ == "__main__":
     unittest.main()

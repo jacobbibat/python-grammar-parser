@@ -3,6 +3,8 @@ man NN man singular
 men NNS man plural
 dog NN dog singular
 new JJ new none
+eats IVBZ eat singular
+eat IVBP eat plural
 likes VBZ like singular
 like VBP like plural
 dislikes VBZ dislike singular
